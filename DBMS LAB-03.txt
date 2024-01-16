@@ -1,0 +1,176 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| chatapp            |
+| chatappdb          |
+| databaseconnection |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.03 sec)
+
+mysql> create database test_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use test_db;
+Database changed
+mysql> create table department ( dept_id int primary key, dept_name varchar(30), dept_phone varchar (15));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> create table employee( emp_id int primary key, emp_name varchar(10),dep_id int, FOREIGN KEY (dep_id) REFERENCES department(dept_id) );
+Query OK, 0 rows affected (0.04 sec)
+
+
+mysql> create table employee( emp_id int primary key, emp_name varchar(10),dep_id int, FOREIGN KEY (dep_id) REFERENCES department(dept_id) );
+Query OK, 0 rows affected (0.04 sec)
+
+
+mysql> insert into department(dept_id,dept_name,dept_phone) values (1,'computer','9842258720'),(2,'software','9814866201'),(3,'civil','9845622301'),(4,'electrical','9809674889'),(5,'IT','9817672450');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into employee(emp_id,emp_name,dep_id)values(101,'ram',1),(102,'sita', 2),(103,'hari',3),(104,'shiv',4),(105,'bibek',5);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from department;
++---------+------------+------------+
+| dept_id | dept_name  | dept_phone |
++---------+------------+------------+
+|       1 | computer   | 9842258720 |
+|       2 | software   | 9814866201 |
+|       3 | civil      | 9845622301 |
+|       4 | electrical | 9809674889 |
+|       5 | IT         | 9817672450 |
++---------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee;
++--------+----------+--------+
+| emp_id | emp_name | dep_id |
++--------+----------+--------+
+|    101 | ram      |      1 |
+|    102 | sita     |      2 |
+|    103 | hari     |      3 |
+|    104 | shiv     |      4 |
+|    105 | bibek    |      5 |
++--------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> __INNER JOIN__
+mysql> select * from department INNER JOIN employee ON department.dept_id=employee.dep_id;
++---------+------------+------------+--------+----------+--------+
+| dept_id | dept_name  | dept_phone | emp_id | emp_name | dep_id |
++---------+------------+------------+--------+----------+--------+
+|       1 | computer   | 9842258720 |    101 | ram      |      1 |
+|       2 | software   | 9814866201 |    102 | sita     |      2 |
+|       3 | civil      | 9845622301 |    103 | hari     |      3 |
+|       4 | electrical | 9809674889 |    104 | shiv     |      4 |
+|       5 | IT         | 9817672450 |    105 | bibek    |      5 |
++---------+------------+------------+--------+----------+--------+
+5 rows in set (0.00 sec)
+mysql> __RIGHT OUTER JOIN__
+mysql> select * from department RIGHT OUTER JOIN employee ON department.dept_id=employee.dep_id;
++---------+------------+------------+--------+----------+--------+
+| dept_id | dept_name  | dept_phone | emp_id | emp_name | dep_id |
++---------+------------+------------+--------+----------+--------+
+|       1 | computer   | 9842258720 |    101 | ram      |      1 |
+|       2 | software   | 9814866201 |    102 | sita     |      2 |
+|       3 | civil      | 9845622301 |    103 | hari     |      3 |
+|       4 | electrical | 9809674889 |    104 | shiv     |      4 |
+|       5 | IT         | 9817672450 |    105 | bibek    |      5 |
++---------+------------+------------+--------+----------+--------+
+5 rows in set (0.00 sec)
+mysql> __LEFT OUTER JOIN__
+mysql> select * from department LEFT OUTER JOIN employee ON department.dept_id=employee.dep_id;
++---------+------------+------------+--------+----------+--------+
+| dept_id | dept_name  | dept_phone | emp_id | emp_name | dep_id |
++---------+------------+------------+--------+----------+--------+
+|       1 | computer   | 9842258720 |    101 | ram      |      1 |
+|       2 | software   | 9814866201 |    102 | sita     |      2 |
+|       3 | civil      | 9845622301 |    103 | hari     |      3 |
+|       4 | electrical | 9809674889 |    104 | shiv     |      4 |
+|       5 | IT         | 9817672450 |    105 | bibek    |      5 |
++---------+------------+------------+--------+----------+--------+
+5 rows in set (0.00 sec)
+mysql> __FULL OUTER JOIN__
+mysql> select * from department LEFT OUTER JOIN employee ON department.dept_id=employee.dep_id
+    -> UNION
+    -> select * from department RIGHT OUTER JOIN employee ON department.dept_id=employee.dep_id;
++---------+------------+------------+--------+----------+--------+
+| dept_id | dept_name  | dept_phone | emp_id | emp_name | dep_id |
++---------+------------+------------+--------+----------+--------+
+|       1 | computer   | 9842258720 |    101 | ram      |      1 |
+|       2 | software   | 9814866201 |    102 | sita     |      2 |
+|       3 | civil      | 9845622301 |    103 | hari     |      3 |
+|       4 | electrical | 9809674889 |    104 | shiv     |      4 |
+|       5 | IT         | 9817672450 |    105 | bibek    |      5 |
++---------+------------+------------+--------+----------+--------+
+5 rows in set (0.02 sec)
+mysql> __CROSS JOIN__
+mysql> select * from department CROSS JOIN employee ;
++---------+------------+------------+--------+----------+--------+
+| dept_id | dept_name  | dept_phone | emp_id | emp_name | dep_id |
++---------+------------+------------+--------+----------+--------+
+|       5 | IT         | 9817672450 |    101 | ram      |      1 |
+|       4 | electrical | 9809674889 |    101 | ram      |      1 |
+|       3 | civil      | 9845622301 |    101 | ram      |      1 |
+|       2 | software   | 9814866201 |    101 | ram      |      1 |
+|       1 | computer   | 9842258720 |    101 | ram      |      1 |
+|       5 | IT         | 9817672450 |    102 | sita     |      2 |
+|       4 | electrical | 9809674889 |    102 | sita     |      2 |
+|       3 | civil      | 9845622301 |    102 | sita     |      2 |
+|       2 | software   | 9814866201 |    102 | sita     |      2 |
+|       1 | computer   | 9842258720 |    102 | sita     |      2 |
+|       5 | IT         | 9817672450 |    103 | hari     |      3 |
+|       4 | electrical | 9809674889 |    103 | hari     |      3 |
+|       3 | civil      | 9845622301 |    103 | hari     |      3 |
+|       2 | software   | 9814866201 |    103 | hari     |      3 |
+|       1 | computer   | 9842258720 |    103 | hari     |      3 |
+|       5 | IT         | 9817672450 |    104 | shiv     |      4 |
+|       4 | electrical | 9809674889 |    104 | shiv     |      4 |
+|       3 | civil      | 9845622301 |    104 | shiv     |      4 |
+|       2 | software   | 9814866201 |    104 | shiv     |      4 |
+|       1 | computer   | 9842258720 |    104 | shiv     |      4 |
+|       5 | IT         | 9817672450 |    105 | bibek    |      5 |
+|       4 | electrical | 9809674889 |    105 | bibek    |      5 |
+|       3 | civil      | 9845622301 |    105 | bibek    |      5 |
+|       2 | software   | 9814866201 |    105 | bibek    |      5 |
+|       1 | computer   | 9842258720 |    105 | bibek    |      5 |
++---------+------------+------------+--------+----------+--------+
+25 rows in set (0.01 sec)
+
+mysql> create view Bibek as select * from employee;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from Bibek;
++--------+----------+--------+
+| emp_id | emp_name | dep_id |
++--------+----------+--------+
+|    101 | ram      |      1 |
+|    102 | sita     |      2 |
+|    103 | hari     |      3 |
+|    104 | shiv     |      4 |
+|    105 | bibek    |      5 |
++--------+----------+--------+
+5 rows in set (0.01 sec)
+
+mysql> create view BIBEK1 as select * from department;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from BIBEK1;
++---------+------------+------------+
+| dept_id | dept_name  | dept_phone |
++---------+------------+------------+
+|       1 | computer   | 9842258720 |
+|       2 | software   | 9814866201 |
+|       3 | civil      | 9845622301 |
+|       4 | electrical | 9809674889 |
+|       5 | IT         | 9817672450 |
++---------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql>
